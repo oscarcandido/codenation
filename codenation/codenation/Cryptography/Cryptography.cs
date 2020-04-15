@@ -119,7 +119,7 @@ namespace codenation
             {
                 StringResult += _byte.ToString("X2");
             }
-            return StringResult;
+            return StringResult.ToLower();
         }
     }
 }

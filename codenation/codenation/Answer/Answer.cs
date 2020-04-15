@@ -5,6 +5,11 @@ using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Linq;
+using System.Threading;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace codenation
 {
@@ -42,10 +47,32 @@ namespace codenation
             }
         }
 
-        public JObject SubmitAnswer()
+        public async System.Threading.Tasks.Task<JObject> SubmitAnswerAsync()
         {
-            MultipartContent Dados = new MultipartContent();
-            return new JObject();
+            using (var httpClient = new HttpClient())
+            {
+                using (var form = new MultipartFormDataContent())
+                {
+                    using (var fs = File.OpenRead(FilePath))
+                    {
+                        using (var streamContent = new StreamContent(fs))
+                        {
+                            using (var fileContent = new ByteArrayContent(await streamContent.ReadAsByteArrayAsync()))
+                            {
+                                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                                // "file" parameter name should be the same as the server side input parameter name
+                                form.Add(fileContent, "answer", Path.GetFileName(FilePath));
+                                HttpResponseMessage response = await httpClient.PostAsync(UrlAPI+ "submit-solution?token=" +Token, form);
+                                var content = response.Content.ReadAsStringAsync();
+                                content.Wait();
+                                JObject Result = JObject.Parse(content.Result);
+                                return Result ;
+                            }
+                        }
+                    }
+                }
+            }
         }
+
     }
 }
