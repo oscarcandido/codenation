@@ -8,47 +8,25 @@ namespace codenation
 {
     public class Cryptography
     {
-        private Dictionary<char, int> Alphabet  = new Dictionary<char, int>()
-        {
-            { 'a', 1},
-            { 'b', 2},
-            { 'c', 3},
-            { 'd', 4},
-            { 'e', 5},
-            { 'f', 6},
-            { 'g', 7},
-            { 'h', 8},
-            { 'i', 9},
-            { 'j', 10},
-            { 'k', 11},
-            { 'l', 12},
-            { 'm', 13},
-            { 'n', 14},
-            { 'o', 15},
-            { 'p', 16},
-            { 'q', 17},
-            { 'r', 18},
-            { 's', 19},
-            { 't', 20},
-            { 'u', 21},
-            { 'v', 22},
-            { 'w', 23},
-            { 'x', 24},
-            { 'y', 25},
-            { 'z', 26}
-        };
-
+        private string Alphabet = "abcdefghijklmnopqrstuvwxyz";
         public Cryptography()
         {
+   
         }
 
+        /// <summary>
+        /// Criptografa um caracter de acordo com o número de casas informado
+        /// </summary>
+        /// <param name="_char"></param>
+        /// <param name="numero_casas"></param>
+        /// <returns></returns>
         public char EncryptChar(char _char, int numero_casas)
         {
             _char = char.ToLower(_char);
             int index = 0;
-            if (Alphabet.ContainsKey(_char))
+            if (Alphabet.Contains(_char))
             {
-                int position = Alphabet[_char];
+                int position = Alphabet.IndexOf(_char) + 1;
                 if (position + numero_casas > 26)
                 {
                     index = (position + numero_casas) - 26;
@@ -58,7 +36,7 @@ namespace codenation
                     index = position + numero_casas;
                 }
 
-                return Alphabet.ElementAt(index - 1).Key;
+                return Alphabet[index - 1];
             }
             else
             {
@@ -66,6 +44,12 @@ namespace codenation
             }
         }
 
+        /// <summary>
+        /// Criptografa uma texto de acordo com o número de casas informado
+        /// </summary>
+        /// <param name="Text"></param>
+        /// <param name="numero_casas"></param>
+        /// <returns></returns>
         public string EncryptText(string Text, int numero_casas)
         {
             string Result = null;
@@ -76,13 +60,19 @@ namespace codenation
             return Result;
         }
 
+        /// <summary>
+        /// Descriptografa um caracter de acordo com o número de casas informado
+        /// </summary>
+        /// <param name="_char"></param>
+        /// <param name="numero_casas"></param>
+        /// <returns></returns>
         public char DecryptChar(char _char,int numero_casas)
         {
             _char = char.ToLower(_char);
             int index = 0;
-            if (Alphabet.ContainsKey(_char))
+            if (Alphabet.Contains(_char))
             {
-                int position = Alphabet[_char];
+                int position = Alphabet.IndexOf(_char) + 1;
                 if (position - numero_casas < 1)
                 {
                     index = (position - numero_casas) + 26;
@@ -92,7 +82,7 @@ namespace codenation
                     index = position - numero_casas;
                 }
 
-                return Alphabet.ElementAt(index - 1).Key;
+                return Alphabet[index - 1];
             }
             else
             {
@@ -100,6 +90,13 @@ namespace codenation
             }
         }
 
+
+        /// <summary>
+        /// Descriptografa um texto de acordo com o número de casas informado
+        /// </summary>
+        /// <param name="Text"></param>
+        /// <param name="numero_casas"></param>
+        /// <returns></returns>
         public string DecryptText(string Text, int numero_casas)
         {
             string Result = null;
@@ -110,6 +107,12 @@ namespace codenation
             return Result;
         }
 
+
+        /// <summary>
+        /// Gera o hash SHA1 do texto informado
+        /// </summary>
+        /// <param name="Texto"></param>
+        /// <returns></returns>
         public string Resumo(string Texto)
         {
             string StringResult = null;

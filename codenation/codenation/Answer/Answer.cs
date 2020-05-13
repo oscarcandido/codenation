@@ -1,14 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
-using System.Text;
-using System.Linq;
-using System.Threading;
-using Newtonsoft.Json;
-using System.Net;
 using System.Net.Http.Headers;
 
 namespace codenation
@@ -33,7 +27,11 @@ namespace codenation
             UrlAPI = ConfigurationManager.AppSettings["urlAPI"];
             FilePath = ConfigurationManager.AppSettings["filePath"];
         }
-
+        /// <summary>
+        /// Salva o arquivo com o objeto da resposta no caminho informado na configuração
+        /// </summary>
+        /// <param name="_Answer"></param>
+        /// <returns></returns>
         public string SaveAnswer(JObject _Answer)
         {
             try
@@ -47,6 +45,12 @@ namespace codenation
             }
         }
 
+
+
+        /// <summary>
+        /// Envia a resposta salva em arquivo para o servidor
+        /// </summary>
+        /// <returns></returns>
         public async System.Threading.Tasks.Task<JObject> SubmitAnswerAsync()
         {
             using (var httpClient = new HttpClient())
